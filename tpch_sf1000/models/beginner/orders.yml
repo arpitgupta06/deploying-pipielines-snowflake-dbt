@@ -1,0 +1,65 @@
+version: 2
+
+models:
+    - name: orders
+      description: Orders table
+    
+      columns:
+      
+        - name: order_id
+          description: order id
+          tests:
+            - not_null:
+                severity: error
+            - unique:
+                severity: error  
+        
+        - name: customer_id
+          description: customer id
+          tests:
+            - not_null:
+                severity: error
+        
+        - name: order_date
+          description: date of order
+
+        - name: order_year
+          description: year of order was placed
+
+        - name: order_status
+          description: status of order
+          tests:
+            - not_null
+            - accepted_values:
+                name: pass_fail
+                values:
+                    - "F"
+                    - "P"
+                    - "O"
+
+        - name: order_priority
+          description: Priority of order
+          tests:
+            - accepted_values:
+                name: priority
+                values:
+                    - "1-URGENT"
+                    - "2-HIGH"
+                    - "3-MEDIUM"
+                    - "4-NOT SPECIFIED"
+                    - "5-LOW"
+
+        - name: shipping_priority
+          description: shipping priority
+
+        - name: order_price
+          description: price of order
+          tests:
+            - dbt_expectations.expect_column_values_to_be_between:
+                min_value: 0
+
+        - name: count_of_orders
+          description: orders count
+          tests:  
+            - dbt_expectations.expect_column_values_to_be_between:
+                min_value: 1

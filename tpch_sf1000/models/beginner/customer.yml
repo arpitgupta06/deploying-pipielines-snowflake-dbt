@@ -1,0 +1,45 @@
+version: 2
+
+models:
+    - name: customer
+      description: "customer table"
+    
+      columns:
+
+        - name: customer_id
+          description: a unique customer id (Primary Key)
+          tests:
+            - not_null:
+                severity: error
+            - unique:
+                severity: error
+
+        - name: customer_name
+          description: name of customer
+
+        - name: average_balance
+          description: average account balance over customer key
+          tests:
+            - dbt_expectations.expect_column_values_to_be_between:
+                min_value: 0
+        
+        - name: market_segment
+          description: market segmentation
+          tests:
+            - accepted_values:
+                name: segment_name
+                values:
+                    - "MACHINERY"
+                    - "FURNITURE"
+                    - "HOUSEHOLD"
+                    - "AUTOMOBILE"
+                    - "BUILDING"
+        
+        - name: nation_key
+          description: nation id from nation table
+          tests:
+            - not_null:
+                severity: error
+            
+        - name: nation_name
+          description: name of the nation

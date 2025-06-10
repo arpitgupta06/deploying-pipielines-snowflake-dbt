@@ -1,0 +1,80 @@
+version: 2
+
+models:
+    - name: lineitem
+      description: "line item"
+
+      columns:
+
+        - name: order_id
+          description: order id of the product
+          tests:
+            - not_null:
+                severity: error
+
+        - name: part_id
+          description: part id
+          tests:
+            - not_null:
+                severity: error
+        
+        - name: supplier_id
+          description: supplier id
+          tests:
+            - not_null:
+                severity: error
+        
+        - name: linenumber
+          description: specific line number of products
+          tests:
+            - dbt_expectations.expect_column_values_to_be_between:
+                min_value: 1
+                max_value: 10
+
+        - name: quantity
+          description: product quantity
+
+        - name: price
+          description: product price
+          tests:
+            - not_null:
+                warn_if: "<0"
+          
+        - name: discount
+          description: discount on product
+        
+        - name: tax
+          description: tax on product price
+        
+        - name: price_with_tax
+          description: price after applying tax on it
+        
+        - name: discounted_price
+          description: price after discount
+          
+        - name: return_status
+          description: product has been returened or not
+          tests:
+            - accepted_values:
+                name: return_status
+                values:
+                    - "R"
+                    - "N"
+                    - "A"
+            - not_null
+
+        - name: line_status
+          description: delivery status of lineitem
+          tests:
+            - not_null
+            - accepted_values:
+                name: delivery_status
+                values:
+                    - "O"
+                    - "F"
+
+        - name: ship_date
+          description: shipping date of product
+
+        - name: ship_mode
+          description: shipping mode of product          
