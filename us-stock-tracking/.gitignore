@@ -1,0 +1,8 @@
+
+target/
+dbt_packages/
+logs/
+analyses/
+tests/
+git_repo_setup_snowflake.sql
+snapshots/
